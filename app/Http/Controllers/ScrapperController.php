@@ -15,13 +15,20 @@ class ScrapperController extends Controller
     public function start(Request $request)
     {
         $data['keyword'] = $request->keyword;
-        $keyword = str_replace(' ', '', $request->keyword);
-        $archived_domains = Http::get('https://web.archive.org/__wb/search/anchor?q=(' . $keyword . ')');
-        $archived_domains = $archived_domains->object();
         $archived_domain_names = array();
-        $years = ['2024'/* , '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014' */];
-        foreach ($archived_domains as $domain) {
-            $domain_name = $domain->name;
+        $location = ['canada','france'];
+        $keywords = ['realestatezzz, real estate','house for sale'];
+        $domains = [];
+        foreach($location as $loc){
+            foreach($keywords as $key){
+                $keyword = str_replace(' ', '', $key);
+                $domains[] = $keyword.$loc.'.com';
+            }
+        }
+        $domain_year_data = [];
+        $years = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014' ];
+        foreach($domains as $domain) {
+            $domain_name = $domain;
             foreach ($years as $year) {
                 $url = 'https://web.archive.org/__wb/calendarcaptures/2?url=' . $domain_name . '&date=' . $year . '&groupby=day';
                 $response = Http::get($url);
@@ -31,6 +38,9 @@ class ScrapperController extends Controller
                         break;
                     }
                 }
+            }
+            if (!empty($domain_year_data)) {
+                continue;
             }
             $client = new \GuzzleHttp\Client();
             $response = $client->request('GET', 'https://domainr.p.rapidapi.com/v2/status?mashape-key=d03abf08787645d4a17386782f11b0b7&domain=' . $domain_name, [
