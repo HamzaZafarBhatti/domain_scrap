@@ -24,7 +24,9 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', function(){
+     return redirect()->route('domain.index');
+    })->name('dashboard');
     Route::controller(DomainController::class)->name('domain.')->prefix('domain')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/start', 'start')->name('start');
