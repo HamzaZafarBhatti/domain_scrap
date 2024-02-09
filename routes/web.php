@@ -4,7 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
-use App\Http\Controllers\ScrapperController;
+use App\Http\Controllers\KeywordController;
+use App\Http\Controllers\DomainController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +25,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::controller(ScrapperController::class)->name('scrapper.')->prefix('scrapper')->group(function () {
+    Route::controller(DomainController::class)->name('domain.')->prefix('domain')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/start', 'start')->name('start');
     });
@@ -32,6 +33,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('countries', CountryController::class);
     Route::get('countries/change_status/{country}', [CountryController::class, 'change_status'])->name('countries.change_status');
     Route::resource('cities', CityController::class);
+    Route::resource('keywords', KeywordController::class);
+
     Route::get('cities/change_status/{city}', [CityController::class, 'change_status'])->name('cities.change_status');
 });
 

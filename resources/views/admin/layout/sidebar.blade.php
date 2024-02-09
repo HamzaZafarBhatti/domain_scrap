@@ -4,7 +4,7 @@
     <a href="{{ route('dashboard') }}" class="brand-link">
         <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
-        <span class="brand-text font-weight-light">Scrap</span>
+        <span class="brand-text font-weight-light">{{env('APP_NAME')}}</span>
     </a>
 
     <!-- Sidebar -->
@@ -30,11 +30,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('scrapper.index') }}"
-                        class="nav-link @if (Route::is('scrapper.index')) active @endif">
+                    <a href="{{ route('domain.index') }}"
+                        class="nav-link @if (Route::is('domain.index')) active @endif">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Scrap Domains
+                            Domains
                         </p>
                     </a>
                 </li>
@@ -53,6 +53,15 @@
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Cities
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('keywords.index') }}"
+                        class="nav-link @if (Route::is('keywords.*')) active @endif">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Additional Keywords
                         </p>
                     </a>
                 </li>
