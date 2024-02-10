@@ -31,6 +31,9 @@ class DomainController extends Controller
         $city = City::whereIn('id', $request->city_id ?? [])->pluck('name');
         $location = $country->merge($city);
         $keywords = explode(',', $request->keyword);
+        if (auth()->user()->role === \App\Enums\UserRoles::USER) {
+            $keywords = [$keywords[0]];
+        }
         foreach ($location as $loc) {
             foreach ($keywords as $key) {
                 $keyword = str_replace(' ', '', $key);
