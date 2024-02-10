@@ -36,7 +36,7 @@
                                 <div class="form-group">
                                     <label>Year</label>
                                     <select name="year" class="form-control">
-                                        @for($i=2000; $i<=2024; $i++)
+                                        @for ($i = 2000; $i <= 2024; $i++)
                                             <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
                                     </select>
@@ -45,7 +45,8 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Country</label>
-                                    <select name="country_id[]" class="form-control" multiple>
+                                    <select name="country_id[]" class="form-control"
+                                        @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN) multiple @endif>
                                         @foreach ($countries as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
@@ -55,7 +56,8 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>City</label>
-                                    <select name="city_id[]" class="form-control" multiple>
+                                    <select name="city_id[]" class="form-control"
+                                        @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN) multiple @endif>
                                         @foreach ($cities as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach

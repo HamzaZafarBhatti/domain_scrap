@@ -9,6 +9,15 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+        <li>
+            <a href="{{ route('logout') }}" class="nav-link"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Logout
+            </a>
+            <form action="{{ route('logout') }}" method="post" id="logout-form">
+                @csrf
+            </form>
+        </li>
     </ul>
 </nav>
 <!-- /.navbar -->

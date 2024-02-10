@@ -16,7 +16,7 @@ class DomainController extends Controller
         $countries = Country::select('id', 'name')->get();
         $cities = City::select('id', 'name')->get();
         $keywords = Keyword::all();
-        return view('admin.domain.index', compact('cities', 'countries','keywords'));
+        return view('admin.domain.index', compact('cities', 'countries', 'keywords'));
     }
 
     public function start(Request $request)

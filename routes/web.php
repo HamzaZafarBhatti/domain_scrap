@@ -6,6 +6,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\DomainController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,12 +21,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function(){
-     return redirect()->route('domain.index');
+    Route::get('/dashboard', function () {
+        return redirect()->route('domain.index');
     })->name('dashboard');
     Route::controller(DomainController::class)->name('domain.')->prefix('domain')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -36,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('countries/change_status/{country}', [CountryController::class, 'change_status'])->name('countries.change_status');
     Route::resource('cities', CityController::class);
     Route::resource('keywords', KeywordController::class);
+    Route::resource('users', UserController::class);
 
     Route::get('cities/change_status/{city}', [CityController::class, 'change_status'])->name('cities.change_status');
 });

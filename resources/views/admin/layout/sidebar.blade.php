@@ -4,7 +4,7 @@
     <a href="{{ route('dashboard') }}" class="brand-link">
         <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
-        <span class="brand-text font-weight-light">{{env('APP_NAME')}}</span>
+        <span class="brand-text font-weight-light">{{ env('APP_NAME') }}</span>
     </a>
 
     <!-- Sidebar -->
@@ -38,33 +38,44 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('countries.index') }}"
-                        class="nav-link @if (Route::is('countries.*')) active @endif">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Countries
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('cities.index') }}"
-                        class="nav-link @if (Route::is('cities.*')) active @endif">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Cities
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('keywords.index') }}"
-                        class="nav-link @if (Route::is('keywords.*')) active @endif">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Additional Keywords
-                        </p>
-                    </a>
-                </li>
+                @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN)
+                    <li class="nav-item">
+                        <a href="{{ route('countries.index') }}"
+                            class="nav-link @if (Route::is('countries.*')) active @endif">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Countries
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('cities.index') }}"
+                            class="nav-link @if (Route::is('cities.*')) active @endif">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Cities
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('keywords.index') }}"
+                            class="nav-link @if (Route::is('keywords.*')) active @endif">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Additional Keywords
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}"
+                            class="nav-link @if (Route::is('users.*')) active @endif">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Users
+                            </p>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
