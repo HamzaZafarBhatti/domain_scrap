@@ -18,7 +18,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Keyword</label>
-                                    <input type="text" class="form-control" name="keyword" id="keyword" required>
+                                    <input type="text" class="form-control" name="keyword" value="{{$keyword ?? ''}}" id="keyword" required>
                                 </div>
                             </div>
                             <div class="col-6">
