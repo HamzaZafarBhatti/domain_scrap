@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\Keyword;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -80,11 +81,15 @@ class DomainController extends Controller
                     'collection' => 'web',
                 ]);
                 $web = $response->json();
-                if($web['first_ts'] == null || $web['last_ts'] == null || $web['years'] == [] || $web['status'] == []){
+                try{
+                    if($web['first_ts'] == null || $web['last_ts'] == null || $web['years'] == [] || $web['status'] == []){
+                        continue;
+                    }
+                    $first_date = Carbon::parse(strtotime($web['first_ts']))->format('Y');
+                    $last_date = Carbon::parse(strtotime($web['last_ts']))->format('Y');
+                }catch(Exception){
                     continue;
                 }
-                $first_date = Carbon::parse(strtotime($web['first_ts']))->format('Y');
-                $last_date = Carbon::parse(strtotime($web['last_ts']))->format('Y');
 
                 if (($request->year - $first_date <= 0) || ($request->year - $last_date <= 0)) {
                     $response = Http::withHeaders([
