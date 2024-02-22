@@ -45,7 +45,7 @@
                     <h4>Cities</h4>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="datatable">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -92,4 +92,12 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#datatable').DataTable();
+        })
+    </script>
 @endsection

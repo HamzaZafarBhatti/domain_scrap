@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    <link href="https://cdn.datatables.net/v/bs5/dt-2.0.0/datatables.min.css" rel="stylesheet">
+
+    @yield('styles')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -89,6 +92,8 @@
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
     <!-- Toastr -->
     <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-2.0.0/datatables.min.js"></script>
+
     <script>
         @if (Session::has('success'))
             toastr.success("{{ session('success') }}")
@@ -97,6 +102,7 @@
             toastr.error("{{ session('error') }}")
         @endif
     </script>
+    @yield('scripts')
 </body>
 
 </html>
