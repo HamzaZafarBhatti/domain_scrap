@@ -38,6 +38,15 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('niche.index') }}"
+                        class="nav-link @if (Route::is('niche.*')) active @endif">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Niche List
+                        </p>
+                    </a>
+                </li>
                 @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN)
                     <li class="nav-item">
                         <a href="{{ route('countries.index') }}"

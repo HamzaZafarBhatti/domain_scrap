@@ -6,6 +6,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\DomainController;
+use App\Http\Controllers\NicheController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/start', 'start')->name('start');
     });
 
+    Route::resource('niche', NicheController::class);
+    Route::get('niche/change_status/{niche}', [NicheController::class, 'change_status'])->name('niche.change_status');
     Route::resource('countries', CountryController::class);
     Route::get('countries/change_status/{country}', [CountryController::class, 'change_status'])->name('countries.change_status');
     Route::resource('cities', CityController::class);

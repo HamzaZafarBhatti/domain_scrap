@@ -61,9 +61,6 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="4">No Records!</td>
-                                </tr>
                             @endforelse
                         </tbody>
                     </table>
