@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 
 Route::get('/', function () {
@@ -40,10 +41,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('countries', CountryController::class);
     Route::get('countries/change_status/{country}', [CountryController::class, 'change_status'])->name('countries.change_status');
     Route::resource('cities', CityController::class);
-    Route::resource('keywords', KeywordController::class);
-    Route::resource('users', UserController::class);
-
     Route::get('cities/change_status/{city}', [CityController::class, 'change_status'])->name('cities.change_status');
+    Route::resource('keywords', KeywordController::class);
+    Route::get('keywords/change_status/{keyword}', [KeywordController::class, 'change_status'])->name('keywords.change_status');
+    Route::resource('users', UserController::class);
 });
 
 Route::middleware('auth')->group(function () {

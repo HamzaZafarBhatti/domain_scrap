@@ -40,6 +40,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                <th>Status</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -48,6 +49,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->name }}</td>
+                                    <td>{{ $item->is_active ? 'Active' : 'In active' }}</td>
                                     <td>
                                         <div class="d-flex" style="gap: 10px">
                                             <form action="{{ route('keywords.destroy', $item->id) }}" method="post">
@@ -57,6 +59,13 @@
                                                     Delete
                                                 </button>
                                             </form>
+                                            <a href="{{ route('keywords.change_status', $item->id) }}" class="btn btn-info">
+                                                @if ($item->is_active)
+                                                    In active
+                                                @else
+                                                    Active
+                                                @endif
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

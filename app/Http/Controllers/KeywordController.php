@@ -34,6 +34,23 @@ class KeywordController extends Controller
             return back()->with('error', 'Something went wrong!');
         }
     }
+    public function change_status(Keyword $keyword)
+    {
+        //
+        try {
+            if ($keyword->is_active) {
+                $keyword->update(['is_active' => false]);
+                $message = 'Keyword status changed to inactive';
+            } else {
+                $keyword->update(['is_active' => true]);
+                $message = 'Keyword status changed to active';
+            }
+            return back()->with('success', $message);
+        } catch (\Throwable $th) {
+            Log::info($th->getMessage());
+            return back()->with('error', 'Something went wrong!');
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */
