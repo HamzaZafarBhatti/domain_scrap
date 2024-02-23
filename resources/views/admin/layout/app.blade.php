@@ -33,6 +33,21 @@
     .select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
     border: none;
 }
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #0d6efd; /* Bootstrap primary color */
+    color: white;
+    margin-right: 5px; /* Space between pills */
+    line-height: 20px; /* Adjust line height to vertically center text */
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: white;
+    margin-right: 4px;
+    vertical-align: middle; /* Center the remove icon vertically */
+}
+.select2-selection__choice__remove {
+    border: none!important;
+}
 </style>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
