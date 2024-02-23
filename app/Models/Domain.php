@@ -11,18 +11,5 @@ class Domain extends Model
 
     protected $fillable = [
         'domain_name',
-        'keyword',
-        'country_id',
-        'city_id',
     ];
-
-    public function country()
-    {
-        return $this->belongsTo(Country::class);
-    }
-
-    public function city()
-    {
-        return $this->belongsTo(City::class);
-    }
 }
