@@ -18,7 +18,8 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Keyword</label>
-                                    <input type="text" class="form-control" name="keyword" value="{{$keyword ?? ''}}" id="keyword" required>
+                                    <input type="text" class="form-control" name="keyword" value="{{ $keyword ?? '' }}"
+                                        id="keyword" required>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -44,9 +45,19 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
+                                    <label>City</label>
+                                    <select name="niche" class="form-control">
+                                        @foreach ($niches as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
                                     <label>Country</label>
                                     <select name="country_id[]" class="form-control"
-                                        @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN) multiple @endif>
+                                        @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN) id="country_multi" multiple @endif>
                                         @foreach ($countries as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
@@ -57,7 +68,7 @@
                                 <div class="form-group">
                                     <label>City</label>
                                     <select name="city_id[]" class="form-control"
-                                        @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN) multiple @endif>
+                                        @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN) id="city_multi" multiple @endif>
                                         @foreach ($cities as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
@@ -102,4 +113,17 @@
             </div>
         @endif
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            if($('#country_multi')) {
+                $('#country_multi').select2();
+            }
+            if($('#city_multi')) {
+                $('#city_multi').select2();
+            }
+        })
+    </script>
 @endsection

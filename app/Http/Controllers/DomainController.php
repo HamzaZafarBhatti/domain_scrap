@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Keyword;
+use App\Models\Niche;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -14,10 +15,11 @@ class DomainController extends Controller
 {
     public function index()
     {
-        $countries = Country::select('id', 'name')->get();
-        $cities = City::select('id', 'name')->get();
-        $keywords = Keyword::all();
-        return view('admin.domain.index', compact('cities', 'countries', 'keywords'));
+        $countries = Country::where('is_active', true)->select('id', 'name')->get();
+        $cities = City::where('is_active', true)->select('id', 'name')->get();
+        $keywords = Keyword::where('is_active', true)->select('id', 'name')->get();
+        $niches = Niche::where('is_active', true)->select('id', 'name')->get();
+        return view('admin.domain.index', compact('cities', 'countries', 'keywords', 'niches'));
     }
 
     public function start(Request $request)
