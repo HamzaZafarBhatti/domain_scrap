@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\AddDomainJob;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Domain;
 use App\Models\Keyword;
 use App\Models\Niche;
 use Carbon\Carbon;
@@ -52,13 +53,13 @@ class DomainController extends Controller
                         'collection' => 'web',
                     ]);
                     $web = $response->json();
-                    try{
-                        if($web['first_ts'] == null || $web['last_ts'] == null || $web['years'] == [] || $web['status'] == []){
+                    try {
+                        if ($web['first_ts'] == null || $web['last_ts'] == null || $web['years'] == [] || $web['status'] == []) {
                             continue;
                         }
                         $first_date = Carbon::parse(strtotime($web['first_ts']))->format('Y');
                         $last_date = Carbon::parse(strtotime($web['last_ts']))->format('Y');
-                    }catch(Exception){
+                    } catch (Exception) {
                         continue;
                     }
                     if (($request->year - $first_date <= 0) || ($request->year - $last_date <= 0)) {
@@ -71,6 +72,7 @@ class DomainController extends Controller
                             $data = $response->json();
                             if (str_contains($data['status'][0]['status'], 'inactive')) {
                                 $archived_domain_names[] = $data['status'][0]['domain'];
+                                Domain::updateOrCreate(['name' => $data['status'][0]['domain']], ['name' => $data['status'][0]['domain']]);
                             }
                         }
                     }
@@ -88,13 +90,13 @@ class DomainController extends Controller
                     'collection' => 'web',
                 ]);
                 $web = $response->json();
-                try{
-                    if($web['first_ts'] == null || $web['last_ts'] == null || $web['years'] == [] || $web['status'] == []){
+                try {
+                    if ($web['first_ts'] == null || $web['last_ts'] == null || $web['years'] == [] || $web['status'] == []) {
                         continue;
                     }
                     $first_date = Carbon::parse(strtotime($web['first_ts']))->format('Y');
                     $last_date = Carbon::parse(strtotime($web['last_ts']))->format('Y');
-                }catch(Exception){
+                } catch (Exception) {
                     continue;
                 }
 
@@ -108,12 +110,12 @@ class DomainController extends Controller
                         $data = $response->json();
                         if (str_contains($data['status'][0]['status'], 'inactive')) {
                             $archived_domain_names[] = $data['status'][0]['domain'];
+                            Domain::updateOrCreate(['name' => $data['status'][0]['domain']], ['name' => $data['status'][0]['domain']]);
                         }
                     }
                 }
             }
         }
-        AddDomainJob::dispatch($archived_domain_names);
-        return back()->with('domains', $archived_domain_names)->with('keyword',$request->keyword);
+        return back()->with('domains', $archived_domain_names)->with('keyword', $request->keyword);
     }
 }

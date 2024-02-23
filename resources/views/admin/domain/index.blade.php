@@ -17,6 +17,16 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
+                                    <label>Niche</label>
+                                    <select name="niche" class="form-control">
+                                        @foreach ($niches as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
                                     <label>Keyword</label>
                                     <input type="text" class="form-control" name="keyword" value="{{ $keyword ?? '' }}"
                                         id="keyword" required>
@@ -40,16 +50,6 @@
                                         @for ($i = 2000; $i <= 2024; $i++)
                                             <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label>City</label>
-                                    <select name="niche" class="form-control">
-                                        @foreach ($niches as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                             </div>
