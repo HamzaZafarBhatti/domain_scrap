@@ -29,7 +29,11 @@
 
     @yield('styles')
 </head>
-
+<style>
+    .select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    border: none;
+}
+</style>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
