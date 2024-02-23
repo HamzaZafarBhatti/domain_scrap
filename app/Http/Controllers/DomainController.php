@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\AddDomainJob;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Keyword;
@@ -112,6 +113,7 @@ class DomainController extends Controller
                 }
             }
         }
+        AddDomainJob::dispatch($archived_domain_names);
         return back()->with('domains', $archived_domain_names)->with('keyword',$request->keyword);
     }
 }
