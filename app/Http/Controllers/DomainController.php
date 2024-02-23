@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class DomainController extends Controller
 {
@@ -38,6 +39,9 @@ class DomainController extends Controller
         $keywords = explode(',', $request->keyword);
         if (auth()->user()->role === \App\Enums\UserRoles::USER) {
             $keywords = [$keywords[0]];
+        }
+        if ($request->niche) {
+            $keywords = array_merge($keywords, [strtolower($request->niche)]);
         }
         if (count($location) > 0) {
             foreach ($location as $loc) {
@@ -72,7 +76,7 @@ class DomainController extends Controller
                             $data = $response->json();
                             if (str_contains($data['status'][0]['status'], 'inactive')) {
                                 $archived_domain_names[] = $data['status'][0]['domain'];
-                                Domain::updateOrCreate(['name' => $data['status'][0]['domain']], ['name' => $data['status'][0]['domain']]);
+                                Domain::updateOrCreate(['domain_name' => $data['status'][0]['domain']], ['domain_name' => $data['status'][0]['domain']]);
                             }
                         }
                     }
@@ -110,11 +114,15 @@ class DomainController extends Controller
                         $data = $response->json();
                         if (str_contains($data['status'][0]['status'], 'inactive')) {
                             $archived_domain_names[] = $data['status'][0]['domain'];
-                            Domain::updateOrCreate(['name' => $data['status'][0]['domain']], ['name' => $data['status'][0]['domain']]);
+                            Domain::updateOrCreate(['domain_name' => $data['status'][0]['domain']], ['domain_name' => $data['status'][0]['domain']]);
                         }
                     }
                 }
             }
+        }
+        if (empty($archived_domain_names)) {
+            $new_key = substr($keywords[0], 0, 3);
+            $archived_domain_names = Domain::where('domain_name', 'like', '%' . $new_key . '%')->pluck('domain_name')->toArray();
         }
         return back()->with('domains', $archived_domain_names)->with('keyword', $request->keyword);
     }

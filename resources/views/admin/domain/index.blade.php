@@ -19,8 +19,9 @@
                                 <div class="form-group">
                                     <label>Niche</label>
                                     <select name="niche" class="form-control">
+                                        <option value="">Select</option>
                                         @foreach ($niches as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            <option value="{{ $item->name }}">{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -98,11 +99,11 @@
                             </thead>
                             <tbody>
                                 @forelse (session('domains') as $item)
-                                    <tr>
+                                    <tr class="bg-success text-white">
                                         <td>{{ $item }}</td>
                                     </tr>
                                 @empty
-                                    <tr>
+                                    <tr class="bg-danger text-white">
                                         <td>No Available Domains!</td>
                                     </tr>
                                 @endforelse
