@@ -8,7 +8,11 @@ use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\DomainController;
 use App\Http\Controllers\NicheController;
 use App\Http\Controllers\UserController;
+use App\Imports\AdditionalKeywordImport;
+use App\Imports\CityImport;
+use App\Imports\CountrtyImport;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +24,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 
 Route::get('/', function () {
@@ -45,6 +48,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('keywords', KeywordController::class);
     Route::get('keywords/change_status/{keyword}', [KeywordController::class, 'change_status'])->name('keywords.change_status');
     Route::resource('users', UserController::class);
+
+    Route::post('countries/import', [CountryController::class,'import'])->name('countries.import');
+    Route::post('cities/import', [CityController::class,'import'])->name('cities.import');
+    Route::post('keywords/import', [KeywordController::class,'import'])->name('keywords.import');
+
+
 });
 
 Route::middleware('auth')->group(function () {

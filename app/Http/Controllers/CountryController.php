@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\CountrtyImport;
 use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CountryController extends Controller
 {
@@ -64,6 +66,23 @@ class CountryController extends Controller
         try {
             $country->delete();
             return back()->with('success', 'Country deleted successfully');
+        } catch (\Throwable $th) {
+            Log::info($th->getMessage());
+            return back()->with('error', 'Something went wrong!');
+        }
+    }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv'
+        ]);
+
+        try {
+            $path = $request->file('file');
+            $path = $path->storeAs('public', $path->getClientOriginalName());
+            $path = storage_path('app/' . $path);
+            Excel::import(new CountrtyImport, $path);
+            return back()->with('success', 'Countries imported successfully');
         } catch (\Throwable $th) {
             Log::info($th->getMessage());
             return back()->with('error', 'Something went wrong!');
