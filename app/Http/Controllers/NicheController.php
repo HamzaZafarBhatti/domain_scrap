@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\NicheImport;
 use App\Models\Niche;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class NicheController extends Controller
 {
@@ -66,6 +68,23 @@ class NicheController extends Controller
         try {
             $niche->delete();
             return back()->with('success', 'Niche deleted successfully');
+        } catch (\Throwable $th) {
+            Log::info($th->getMessage());
+            return back()->with('error', 'Something went wrong!');
+        }
+    }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv'
+        ]);
+
+        try {
+            $path = $request->file('file');
+            $path = $path->storeAs('public', $path->getClientOriginalName());
+            $path = storage_path('app/' . $path);
+            Excel::import(new NicheImport, $path);
+            return back()->with('success', 'Niches imported successfully');
         } catch (\Throwable $th) {
             Log::info($th->getMessage());
             return back()->with('error', 'Something went wrong!');

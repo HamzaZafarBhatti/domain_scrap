@@ -85,7 +85,15 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
     <script>
+        $(document).ready(function() {
+            $('#datatable').DataTable();
+        })
+    </script>
+     <script>
         document.getElementById('upload-button').addEventListener('click', function() {
                 document.getElementById('file-input').click();
             });
@@ -94,13 +102,5 @@
                 console.log('submitting', document.getElementById('file-upload-form'));
                 document.getElementById('file-upload-form').submit();
             }
-    </script>
-@endsection
-
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            $('#datatable').DataTable();
-        })
     </script>
 @endsection
