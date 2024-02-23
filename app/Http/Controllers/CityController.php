@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\CityImport;
 use App\Models\City;
 use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CityController extends Controller
 {
@@ -14,9 +16,8 @@ class CityController extends Controller
      */
     public function index()
     {
-        $countries = Country::where('is_active', 1)->pluck('name', 'id');
         $cities = City::all();
-        return view('admin.cities.index', compact('countries', 'cities'));
+        return view('admin.cities.index', compact('cities'));
     }
 
     /**
@@ -69,6 +70,23 @@ class CityController extends Controller
             return back()->with('success', 'City deleted successfully');
         } catch (\Throwable $th) {
             Log::info($th->getMessage());
+            return back()->with('error', 'Something went wrong!');
+        }
+    }
+    public function import (Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv'
+        ]);
+        try {
+            $path = $request->file('file');
+            $path = $path->storeAs('public', $path->getClientOriginalName());
+            $path = storage_path('app/' . $path);
+            Excel::import(new CityImport, $path);
+            return back()->with('success', 'Cities imported successfully');
+        } catch (\Throwable $th) {
+            Log::info($th->getMessage());
+            dd($th->getMessage());
             return back()->with('error', 'Something went wrong!');
         }
     }

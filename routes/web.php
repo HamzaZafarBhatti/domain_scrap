@@ -7,7 +7,11 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\DomainController;
 use App\Http\Controllers\UserController;
+use App\Imports\AdditionalKeywordImport;
+use App\Imports\CityImport;
+use App\Imports\CountrtyImport;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +23,15 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('test', function () {
+    $countries = public_path('countries.xls');
+    Excel::import(new CountrtyImport, $countries);
+    $cities = public_path('cities.xls');
+    Excel::import(new CityImport, $cities);
+    $keywords = public_path('keywords.xls');
+    Excel::import(new AdditionalKeywordImport, $keywords);
 
+});
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
@@ -40,6 +52,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('users', UserController::class);
 
     Route::get('cities/change_status/{city}', [CityController::class, 'change_status'])->name('cities.change_status');
+
+    Route::post('countries/import', [CountryController::class,'import'])->name('countries.import');
+    Route::post('cities/import', [CityController::class,'import'])->name('cities.import');
+    Route::post('keywords/import', [KeywordController::class,'import'])->name('keywords.import');
+
+
 });
 
 Route::middleware('auth')->group(function () {

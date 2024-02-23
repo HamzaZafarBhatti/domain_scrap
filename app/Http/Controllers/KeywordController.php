@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\AdditionalKeywordImport;
 use App\Models\Keyword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KeywordController extends Controller
 {
@@ -42,6 +44,22 @@ class KeywordController extends Controller
         try {
             $keyword->delete();
             return back()->with('success', 'Keyword deleted successfully');
+        } catch (\Throwable $th) {
+            Log::info($th->getMessage());
+            return back()->with('error', 'Something went wrong!');
+        }
+    }
+    public function import (Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv'
+        ]);
+        try {
+            $path = $request->file('file');
+            $path = $path->storeAs('public', $path->getClientOriginalName());
+            $path = storage_path('app/' . $path);
+            Excel::import(new AdditionalKeywordImport, $path);
+            return back()->with('success', 'Cities imported successfully');
         } catch (\Throwable $th) {
             Log::info($th->getMessage());
             return back()->with('error', 'Something went wrong!');
