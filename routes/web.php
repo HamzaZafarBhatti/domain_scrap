@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('countries/import', [CountryController::class,'import'])->name('countries.import');
     Route::post('cities/import', [CityController::class,'import'])->name('cities.import');
     Route::post('keywords/import', [KeywordController::class,'import'])->name('keywords.import');
+    Route::post('niches/import', [NicheController::class,'import'])->name('niches.import');
 
 
 });
