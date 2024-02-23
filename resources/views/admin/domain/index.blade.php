@@ -57,7 +57,7 @@
                                 <div class="form-group">
                                     <label>Country</label>
                                     <select name="country_id[]" class="form-control"
-                                        @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN) id="country_multi" multiple @endif>
+                                        id="country_multi" multiple>
                                         @foreach ($countries as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
@@ -68,7 +68,7 @@
                                 <div class="form-group">
                                     <label>City</label>
                                     <select name="city_id[]" class="form-control"
-                                        @if (auth()->user()->role === \App\Enums\UserRoles::ADMIN) id="city_multi" multiple @endif>
+                                        id="city_multi" multiple>
                                         @foreach ($cities as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
