@@ -4,6 +4,14 @@
 
 @section('page_name', 'Availability of Domains')
 
+@section('styles')
+    <style>
+        .select2-container .select2-selection--single {
+            height: 38px !important;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -18,7 +26,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Niche</label>
-                                    <select name="niche" class="form-control">
+                                    <select name="niche" class="form-control" id="niche">
                                         <option value="">Select</option>
                                         @foreach ($niches as $item)
                                             <option value="{{ $item->name }}">{{ $item->name }}</option>
@@ -36,7 +44,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Additional Keyword</label>
-                                    <select name="additional_keyword" class="form-control">
+                                    <select name="additional_keyword" class="form-control" id="additional_keyword">
                                         <option value="">Select</option>
                                         @foreach ($keywords as $item)
                                             <option value="{{ $item->name }}">{{ ucfirst($item->name) }}</option>
@@ -57,8 +65,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Country</label>
-                                    <select name="country_id[]" class="form-control"
-                                        id="country_multi" multiple>
+                                    <select name="country_id[]" class="form-control" id="country_multi" multiple>
                                         @foreach ($countries as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
@@ -68,8 +75,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>City</label>
-                                    <select name="city_id[]" class="form-control"
-                                        id="city_multi" multiple>
+                                    <select name="city_id[]" class="form-control" id="city_multi" multiple>
                                         @foreach ($cities as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
@@ -119,12 +125,14 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            if($('#country_multi')) {
+            if ($('#country_multi')) {
                 $('#country_multi').select2();
             }
-            if($('#city_multi')) {
+            if ($('#city_multi')) {
                 $('#city_multi').select2();
             }
+            $('#niche').select2();
+            $('#additional_keyword').select2();
         })
     </script>
 @endsection
