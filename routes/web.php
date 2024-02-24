@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AvailableDomainController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\DomainController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\NicheController;
+use App\Http\Controllers\SubNicheController;
 use App\Http\Controllers\UserController;
 use App\Imports\AdditionalKeywordImport;
 use App\Imports\CityImport;
@@ -53,8 +56,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('cities/import', [CityController::class,'import'])->name('cities.import');
     Route::post('keywords/import', [KeywordController::class,'import'])->name('keywords.import');
     Route::post('niches/import', [NicheController::class,'import'])->name('niches.import');
+    Route::post('sub-niches/import', [SubNicheController::class,'import'])->name('sub-niches.import');
 
+    Route::resource('available-domains', AvailableDomainController::class);
+    Route::resource('sub-niches', SubNicheController::class);
+    Route::get('sub-niches/change_status/{sub_niche}', [SubNicheController::class, 'change_status'])->name('sub-niches.change_status');
 
+    Route::controller(JobController::class)->name('job.')->prefix('job')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/start', 'start')->name('start');
+    });
 });
 
 Route::middleware('auth')->group(function () {

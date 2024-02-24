@@ -17,7 +17,7 @@ class NicheImport implements ToCollection
         {
             Niche::updateOrCreate(['name' => $row[0]],[
                 'name' => $row[0],
-                'is_active' => false,
+                'is_active' => true,
             ]);
         }
     }

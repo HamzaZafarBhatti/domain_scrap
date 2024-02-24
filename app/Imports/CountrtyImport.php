@@ -18,7 +18,7 @@ class CountrtyImport implements ToCollection
         {
             Country::updateOrCreate(['name' => $row[0]],[
                 'name' => $row[0],
-                'is_active' => false,
+                'is_active' => true,
             ]);
         }
     }

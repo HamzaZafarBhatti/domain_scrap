@@ -13,7 +13,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class DomainController extends Controller
+class JobController extends Controller
 {
     public function index()
     {
@@ -22,21 +22,19 @@ class DomainController extends Controller
         if (auth()->user()->role === \App\Enums\UserRoles::USER) {
             $countries = Country::select('id', 'name')->get()->random(3);
             $cities = City::select('id', 'name')->get()->random(3);
-            return view('admin.domain.index', compact('cities', 'countries', 'keywords', 'niches'));
+            return view('admin.job.index', compact('cities', 'countries', 'keywords', 'niches'));
         }
         $countries = Country::select('id', 'name')->get();
         $cities = City::select('id', 'name')->get();
 
-        return view('admin.domain.index', compact('cities', 'countries', 'keywords', 'niches'));
+        return view('admin.job.index', compact('cities', 'countries', 'keywords', 'niches'));
     }
 
     public function start(Request $request)
     {
-        // $request->validate([
-        //     'country_id' => 'required_without:city_id',
-        //     'city_id' => 'required_without:country_id',
+       return \redirect()->back();
+        // This goes to the job
 
-        // ]);
         $archived_domain_names = array();
         $country = Country::whereIn('id', $request->country_id ?? [])->pluck('name');
         $city = City::whereIn('id', $request->city_id ?? [])->pluck('name');

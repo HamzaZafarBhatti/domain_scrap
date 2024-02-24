@@ -1,8 +1,8 @@
 @extends('admin.layout.app')
 
-@section('title', 'Availability of Domains')
+@section('title', 'Job of Domains')
 
-@section('page_name', 'Availability of Domains')
+@section('page_name', 'Job of Domains')
 
 @section('styles')
     <style>
@@ -52,7 +52,7 @@
                     <div id="loader" style="display:none;">
                         <div class="spinner"></div>
                     </div>
-                    <form action="{{ route('domain.start') }}" method="post" id="domainform">
+                    <form action="{{ route('job.start') }}" method="post" id="domainform">
                         @csrf
                         <div class="row">
                             <div class="col-3">
@@ -130,35 +130,6 @@
                 </div>
             </div>
         </div>
-        @if (session()->has('domains'))
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Available Domains</h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse (session('domains') as $item)
-                                    <tr class="bg-success text-white">
-                                        <td>{{ $item }}</td>
-                                    </tr>
-                                @empty
-                                    <tr class="bg-danger text-white">
-                                        <td>No Available Domains!</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        @endif
     </div>
 @endsection
 

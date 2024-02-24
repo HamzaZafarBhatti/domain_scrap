@@ -49,6 +49,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sub-niches.index') }}"
+                            class="nav-link @if (Route::is('niche.*')) active @endif">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Sub Niche List
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('countries.index') }}"
                             class="nav-link @if (Route::is('countries.*')) active @endif">
                             <i class="nav-icon fas fa-th"></i>
@@ -81,6 +90,24 @@
                             <i class="nav-icon fas fa-th"></i>
                             <p>
                                 Users
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('available-domains.index') }}"
+                            class="nav-link @if (Route::is('available-domains.*')) active @endif">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Available Free domains
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('job.index') }}"
+                            class="nav-link @if (Route::is('job.index')) active @endif">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Jobs
                             </p>
                         </a>
                     </li>
