@@ -22,8 +22,8 @@ class SubNicheController extends Controller
             $records = SubNiche::where('niche_id', request()->niche)->get();
             return response()->json($records, 200);
         }
-        $sub_niches = Niche::all();
-        return view('admin.sub-niche.index', compact('records','sub_niches'));
+        $niche = Niche::all();
+        return view('admin.sub-niche.index', compact('records', 'niche'));
     }
 
     /**
@@ -34,7 +34,7 @@ class SubNicheController extends Controller
         //
         $data = $request->validate([
             'name' => 'required',
-            'niche' => 'required'
+            'niche_id' => 'required'
         ]);
         try {
             SubNiche::create($data);
