@@ -30,7 +30,6 @@ class JobController extends Controller
 
     public function start(Request $request)
     {
-        $archived_domain_names = array();
         $country = Country::whereIn('id', $request->country_id ?? [])->pluck('name');
         $city = City::whereIn('id', $request->city_id ?? [])->pluck('name');
         $location = $country->merge($city);

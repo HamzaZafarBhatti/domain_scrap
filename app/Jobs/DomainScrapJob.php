@@ -61,7 +61,6 @@ class DomainScrapJob implements ShouldQueue
                 Log::info('Response from domainr:');
                 Log::info(json_encode($data));
                 if (str_contains($data['status'][0]['status'], 'inactive')) {
-                    $archived_domain_names[] = $data['status'][0]['domain'];
                     Domain::updateOrCreate(['domain_name' => $data['status'][0]['domain']], ['domain_name' => $data['status'][0]['domain']]);
                 }
             }
