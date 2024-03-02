@@ -76,6 +76,9 @@
                         @empty
                         <tr>
                             <td colspan="4">No Records!</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         @endforelse
                     </tbody>

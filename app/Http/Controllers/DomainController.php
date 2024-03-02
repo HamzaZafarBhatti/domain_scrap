@@ -37,6 +37,8 @@ class DomainController extends Controller
         //     'city_id' => 'required_without:country_id',
 
         // ]);
+        $niche = null;
+        $sub_niche = null;
         $archived_domain_names = array();
         $country = Country::whereIn('id', $request->country_id ?? [])->pluck('name');
         $city = City::whereIn('id', $request->city_id ?? [])->pluck('name');
@@ -87,7 +89,7 @@ class DomainController extends Controller
                             $data = $response->json();
                             if (str_contains($data['status'][0]['status'], 'inactive')) {
                                 $archived_domain_names[] = $data['status'][0]['domain'];
-                                Domain::updateOrCreate(['domain_name' => $data['status'][0]['domain']], ['domain_name' => $data['status'][0]['domain']]);
+                                Domain::updateOrCreate(['domain_name' => $data['status'][0]['domain']], ['sub_niche_id'=> $sub_niche?->id,'niche_id' => $niche?->id,'domain_name' => $data['status'][0]['domain']]);
                             }
                         }
                     }
@@ -125,7 +127,7 @@ class DomainController extends Controller
                         $data = $response->json();
                         if (str_contains($data['status'][0]['status'], 'inactive')) {
                             $archived_domain_names[] = $data['status'][0]['domain'];
-                            Domain::updateOrCreate(['domain_name' => $data['status'][0]['domain']], ['domain_name' => $data['status'][0]['domain']]);
+                            Domain::updateOrCreate(['domain_name' => $data['status'][0]['domain']], ['sub_niche_id'=> $sub_niche?->id,'niche_id' => $niche?->id,'domain_name' => $data['status'][0]['domain']]);
                         }
                     }
                 }

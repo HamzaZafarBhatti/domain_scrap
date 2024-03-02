@@ -20,7 +20,7 @@ class DomainScrapJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $domain, private $year)
+    public function __construct(private $domain, private $year,private $niche=null,private $sub_niche=null)
     {
         //
     }
@@ -61,7 +61,7 @@ class DomainScrapJob implements ShouldQueue
                 Log::info('Response from domainr:');
                 Log::info(json_encode($data));
                 if (str_contains($data['status'][0]['status'], 'inactive')) {
-                    Domain::updateOrCreate(['domain_name' => $data['status'][0]['domain']], ['domain_name' => $data['status'][0]['domain']]);
+                    Domain::updateOrCreate(['domain_name' => $data['status'][0]['domain']], ['sub_niche_id'=> $this->sub_niche?->id,'niche_id' => $this->niche?->id,'is_job' => true,'domain_name' => $data['status'][0]['domain']]);
                 }
             }
         }

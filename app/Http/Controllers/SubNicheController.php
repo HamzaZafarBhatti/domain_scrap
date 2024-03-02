@@ -82,10 +82,9 @@ class SubNicheController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xls,xlsx,csv',
+            'file' => 'required|mimes:csv,txt,xls,xlsx,application/vnd.ms-excel,text/plain,text/csv,application/csv,application/excel,application/vnd.msexcel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'niche' => 'required'
         ]);
-
         try {
             $path = $request->file('file');
             $path = $path->storeAs('public', $path->getClientOriginalName());

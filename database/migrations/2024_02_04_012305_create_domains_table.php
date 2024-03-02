@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('keyword');
             $table->foreignId('country_id');
             $table->foreignId('city_id');
+            $table->foreignId('niche_id')->nullable()->constrained();
+            $table->foreignId('sub_niche_id')->nullable()->constrained();
+            $table->boolean('is_job')->default(false);
             $table->timestamps();
         });
     }

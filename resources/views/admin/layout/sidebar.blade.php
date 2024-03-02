@@ -50,7 +50,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sub-niches.index') }}"
-                            class="nav-link @if (Route::is('niche.*')) active @endif">
+                            class="nav-link @if (Route::is('sub-niches.*')) active @endif">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
                                 Sub Niche List

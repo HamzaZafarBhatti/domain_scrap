@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AvailableDomainResource;
 use App\Models\Domain;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class AvailableDomainController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+ * Show the form for creating a new resource.
      */
     public function create()
     {

@@ -17,6 +17,9 @@
                             <tr>
                                 {{-- <th>#</th> --}}
                                 <th>Name</th>
+                                <th>Niche</th>
+                                <th>Sub Niche</th>
+                                <th>Job</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,6 +27,9 @@
                                 <tr>
                                     {{-- <td>{{ $loop->iteration }}</td> --}}
                                     <td>{{ $item->domain_name }}</td>
+                                    <td>{{ \ucfirst($item->niche?->name) }}</td>
+                                    <td>{{ \ucfirst($item->subNiche?->name) }}</td>
+                                    <td>{{ $item->is_job ? 'Yes' : 'No' }}</td>
                                 </tr>
                             @empty
                             @endforelse

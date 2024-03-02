@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Imports\AdditionalKeywordImport;
 use App\Imports\CityImport;
 use App\Imports\CountrtyImport;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -31,6 +32,10 @@ Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'i
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
+});
+Route::get('test', function () {
+    Log::info('Test log');
+    Log::info(json_encode(request()->all()));
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

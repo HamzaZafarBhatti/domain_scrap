@@ -30,6 +30,8 @@ class JobController extends Controller
 
     public function start(Request $request)
     {
+        $niche = null;
+        $sub_niche = null;
         $country = Country::whereIn('id', $request->country_id ?? [])->pluck('name');
         $city = City::whereIn('id', $request->city_id ?? [])->pluck('name');
         $location = $country->merge($city);
@@ -52,14 +54,14 @@ class JobController extends Controller
                     $keyword = str_replace(' ', '', $key);
                     $loc_name = str_replace(' ', '', $loc);
                     $domain =  \strtolower($keyword) . $request->additional_keyword . \strtolower($loc_name) . '.com';
-                    dispatch(new DomainScrapJob($domain, $request->year));
+                    dispatch(new DomainScrapJob($domain, $request->year,$niche,$sub_niche));
                 }
             }
         } else {
             foreach ($keywords as $key) {
                 $keyword = str_replace(' ', '', $key);
                 $domain =  \strtolower($keyword) . $request->additional_keyword . '.com';
-                dispatch(new DomainScrapJob($domain, $request->year));
+                dispatch(new DomainScrapJob($domain, $request->year,$niche,$sub_niche));
             }
         }
         return back()->with('success', 'Your request is being processed.');

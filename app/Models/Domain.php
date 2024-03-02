@@ -9,7 +9,15 @@ class Domain extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'domain_name',
-    ];
+    protected $guarded = [];
+
+    public function niche ()
+    {
+        return $this->belongsTo(Niche::class);
+    }
+
+    public function subNiche ()
+    {
+        return $this->belongsTo(SubNiche::class);
+    }
 }
