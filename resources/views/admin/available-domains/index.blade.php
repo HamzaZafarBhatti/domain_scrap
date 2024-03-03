@@ -17,6 +17,7 @@
                             <tr>
                                 {{-- <th>#</th> --}}
                                 <th>Name</th>
+                                <th>Date</th>
                                 <th>Niche</th>
                                 <th>Sub Niche</th>
                                 <th>Job</th>
@@ -27,7 +28,8 @@
                                 <tr>
                                     {{-- <td>{{ $loop->iteration }}</td> --}}
                                     <td>{{ $item->domain_name }}</td>
-                                    <td>{{ \ucfirst($item->niche?->name) }}</td>
+                                    <td>{{ $item->created_at }}</td>
+                                    <td>{{ \ucfirst($item->niche ? $item->niche->name : $item->subNiche?->niche?->name) }}</td>
                                     <td>{{ \ucfirst($item->subNiche?->name) }}</td>
                                     <td>{{ $item->is_job ? 'Yes' : 'No' }}</td>
                                 </tr>

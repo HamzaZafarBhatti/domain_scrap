@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Jobs\DomainScrapJob;
 use App\Models\City;
 use App\Models\Country;
-use App\Models\Domain;
 use App\Models\Keyword;
 use App\Models\Niche;
 use App\Models\SubNiche;
@@ -49,19 +48,21 @@ class JobController extends Controller
             $keywords = array_merge($keywords, [strtolower($niche->name)]);
         }
         if (count($location) > 0) {
-            foreach ($location as $loc) {
-                foreach ($keywords as $key) {
+            foreach ($location as $p_index => $loc) {
+                foreach ($keywords as $index => $key) {
                     $keyword = str_replace(' ', '', $key);
                     $loc_name = str_replace(' ', '', $loc);
                     $domain =  \strtolower($keyword) . $request->additional_keyword . \strtolower($loc_name) . '.com';
-                    dispatch(new DomainScrapJob($domain, $request->year,$niche,$sub_niche));
+                    $delay = now()->addMinutes(4 + $p_index + $index);
+                    dispatch(new DomainScrapJob($domain, $request->year,$niche,$sub_niche))->delay($delay);
                 }
             }
         } else {
-            foreach ($keywords as $key) {
+            foreach ($keywords as $index => $key) {
                 $keyword = str_replace(' ', '', $key);
                 $domain =  \strtolower($keyword) . $request->additional_keyword . '.com';
-                dispatch(new DomainScrapJob($domain, $request->year,$niche,$sub_niche));
+                $delay = now()->addMinutes(4 +$index);
+                dispatch(new DomainScrapJob($domain, $request->year,$niche,$sub_niche))->delay($delay);
             }
         }
         return back()->with('success', 'Your request is being processed.');
