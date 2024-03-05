@@ -8,6 +8,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\DomainController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\JobDoneController;
 use App\Http\Controllers\NicheController;
 use App\Http\Controllers\SubNicheController;
 use App\Http\Controllers\UserController;
@@ -66,6 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('available-domains', AvailableDomainController::class);
     Route::resource('sub-niches', SubNicheController::class);
     Route::get('sub-niches/change_status/{sub_niche}', [SubNicheController::class, 'change_status'])->name('sub-niches.change_status');
+    Route::get('job-done', [JobDoneController::class,'index'])->name('job-done.index');
 
     Route::controller(JobController::class)->name('job.')->prefix('job')->group(function () {
         Route::get('/', 'index')->name('index');

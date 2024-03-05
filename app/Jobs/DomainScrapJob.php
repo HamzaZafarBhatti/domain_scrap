@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Exception;
 use App\Models\Domain;
+use App\Models\JobDone;
 use Illuminate\Support\Facades\Log;
 
 class DomainScrapJob implements ShouldQueue
@@ -20,7 +21,7 @@ class DomainScrapJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $domain, private $year,private $niche=null,private $sub_niche=null)
+    public function __construct(private $domain, private $year,private $niche=null,private $sub_niche=null,private $country = null,private $city = null)
     {
         //
     }
@@ -65,5 +66,24 @@ class DomainScrapJob implements ShouldQueue
                 }
             }
         }
+        JobDone::create([
+            'is_country' => $this->country ? true : false,
+            'is_city' => $this->city ? true : false,
+            'is_niche' => $this->niche ? true : false,
+            'is_sub_niche' => $this->sub_niche ? true : false,
+            'status' => 'Completed',
+            'domain' => $this->domain
+        ]);
+    }
+    public function failed(\Throwable $exception)
+    {
+        JobDone::create([
+            'is_country' => $this->country ? true : false,
+            'is_city' => $this->city ? true : false,
+            'is_niche' => $this->niche ? true : false,
+            'is_sub_niche' => $this->sub_niche ? true : false,
+            'status' => 'Failed',
+            'domain' => $this->domain
+        ]);
     }
 }

@@ -111,6 +111,15 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('job-done.index') }}"
+                            class="nav-link @if (Route::is('job-done.index')) active @endif">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Processed Jobs
+                            </p>
+                        </a>
+                    </li>
                 @endif
             </ul>
         </nav>
