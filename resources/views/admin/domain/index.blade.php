@@ -166,7 +166,7 @@
     <script>
         $(document).ready(function() {
             $('#domainform').submit(function() {
-                $('#loader').show(); // Show the loader
+                // $('#loader').show(); // Show the loader
             });
             if ($('#country_multi')) {
                 $('#country_multi').select2({
@@ -212,5 +212,37 @@
                 }
             });
         });
+        const keywordsInput = document.getElementById('keyword');
+    const countrySelect = document.getElementById('country_multi');
+    const citySelect = document.getElementById('city_multi');
+
+    const form = document.querySelector('#domainform');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let keywords = keywordsInput.value.split(',').filter(Boolean); // Split by comma and remove empty strings
+        const countries = Array.from(countrySelect.selectedOptions).map(option => option.value);
+        const cities = Array.from(citySelect.selectedOptions).map(option => option.value);
+        const niche = document.getElementById('niche').value;
+        const subniche = document.getElementById('sub_niche').value;
+        if(subniche){
+            keywords = 1
+        }
+        else if(niche){
+            keywords = 1
+        }
+        else{
+            keywords = keywords.length
+        }
+
+        totalSelections = keywords * (countries.length + cities.length);
+
+        if (totalSelections > 10) {
+            alert('You cannot select more than 10 combined keywords, countries, and cities.');
+        }
+        else{
+            $('#loader').show(); // Show the loader
+            this.submit();
+        }
+    });
     </script>
 @endsection
