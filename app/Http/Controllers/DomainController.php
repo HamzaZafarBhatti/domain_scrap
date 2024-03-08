@@ -32,7 +32,6 @@ class DomainController extends Controller
 
     public function start(Request $request)
     {
-        return $request;
         // $request->validate([
         //     'country_id' => 'required_without:city_id',
         //     'city_id' => 'required_without:country_id',

@@ -19,7 +19,6 @@ class SubNicheImport implements ToCollection
     }
     public function collection(Collection $rows)
     {
-        $niches = Niche::all();
         foreach ($rows as $row) {
             if(!isset($row[0])) continue;
             SubNiche::updateOrCreate(['name' => $row[0]], [

@@ -50,6 +50,7 @@
                     <form id="file-upload-form" method="POST" action="{{ route('cities.import') }}"
                         enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="country_id" id="file_country_id">
                         <input type="file" name="file" id="file-input" style="display: none;"
                             onchange="submitForm()" />
 
@@ -68,6 +69,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                <th>Country</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -77,6 +79,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->name }}</td>
+                                    <td>{{ $item->country->name }}</td>
                                     <td>{{ $item->is_active ? 'Active' : 'In active' }}</td>
                                     <td>
                                         <div class="d-flex" style="gap: 10px">
@@ -112,15 +115,14 @@
         $(document).ready(function() {
             $('#datatable').DataTable();
         })
-        $('#country_id').select2({
-            closeOnSelect: false
-        });
+        $('#country_id').select2();
         document.getElementById('upload-button').addEventListener('click', function() {
             document.getElementById('file-input').click();
         });
 
         function submitForm() {
             console.log('submitting', document.getElementById('file-upload-form'));
+            document.getElementById('file_country_id').value = document.getElementById('country_id').value;
             document.getElementById('file-upload-form').submit();
         }
     </script>

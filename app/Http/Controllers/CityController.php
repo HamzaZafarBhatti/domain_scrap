@@ -16,7 +16,7 @@ class CityController extends Controller
      */
     public function index()
     {
-        $cities = City::all();
+        $cities = City::with('country')->get();
         $countries = Country::where('is_active', 1)->get();
         return view('admin.cities.index', compact('cities', 'countries'));
     }
@@ -77,13 +77,14 @@ class CityController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xls,xlsx,csv'
+            'file' => 'required|mimes:csv,txt,xls,xlsx,application/vnd.ms-excel,text/plain,text/csv,application/csv,application/excel,application/vnd.msexcel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'country_id' => 'required'
         ]);
         try {
             $path = $request->file('file');
             $path = $path->storeAs('public', $path->getClientOriginalName());
             $path = storage_path('app/' . $path);
-            Excel::import(new CityImport, $path);
+            Excel::import(new CityImport($request->country_id), $path);
             return back()->with('success', 'Cities imported successfully');
         } catch (\Throwable $th) {
             Log::info($th->getMessage());

@@ -10,15 +10,19 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 class CityImport implements ToCollection
 {
+    public function __construct(private $country_id)
+    {
+    }
     /**
-    * @param Collection $collection
-    */
+     * @param Collection $collection
+     */
     public function collection(Collection $rows)
     {
-        foreach ($rows as $row)
-        {
-            City::updateOrCreate(['name' => $row[0]],[
+        foreach ($rows as $row) {
+            if (!isset($row[0])) continue;
+            City::updateOrCreate(['name' => $row[0], 'country_id' => $this->country_id], [
                 'name' => $row[0],
+                'country_id' => $this->country_id,
                 'is_active' => true,
             ]);
         }
