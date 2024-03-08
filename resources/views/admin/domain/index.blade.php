@@ -9,35 +9,43 @@
         .select2-container .select2-selection--single {
             height: 38px !important;
         }
+
         #loader {
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        /* Optional: Add a background overlay */
-        background: rgba(255, 255, 255, 0.8);
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999; /* Ensure it's above other elements */
-    }
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            /* Optional: Add a background overlay */
+            background: rgba(255, 255, 255, 0.8);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            /* Ensure it's above other elements */
+        }
 
-    .spinner {
-        border: 5px solid #f3f3f3; /* Light grey */
-        border-top: 5px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 2s linear infinite;
-    }
+        .spinner {
+            border: 5px solid #f3f3f3;
+            /* Light grey */
+            border-top: 5px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 @endsection
 
@@ -77,8 +85,8 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Keyword</label>
-                                    <input type="text" class="form-control" name="keyword" oninput="emptyNiche()" value="{{ $keyword ?? '' }}"
-                                        id="keyword">
+                                    <input type="text" class="form-control" name="keyword" oninput="emptyNiche()"
+                                        value="{{ $keyword ?? '' }}" id="keyword">
                                 </div>
                             </div>
                             <div class="col-6">
@@ -172,6 +180,34 @@
                 $('#country_multi').select2({
                     closeOnSelect: false
                 });
+                $('#country_multi').change(function() {
+                    let value = $(this).val();
+                    if (value.length < 2) {
+                        $('#city_multi').val([]).change().attr('disabled', false);
+                        $.ajax({
+                            url: "{{ route('cities.get_by_country') }}",
+                            type: 'post',
+                            data: {
+                                country_id: value[0],
+                                '_token': '{{ csrf_token() }}'
+                            },
+                            success: function(data) {
+                                console.log(data)
+                                $('#city_multi').empty();
+                                data.forEach(element => {
+                                    $('#city_multi').append('<option value="' + element
+                                        .id + '">' + element.name +
+                                        '</option>');
+                                });
+                                $('#city_multi').select2({
+                                    closeOnSelect: false
+                                });
+                            }
+                        });
+                    } else {
+                        $('#city_multi').val([]).change().attr('disabled', true);
+                    }
+                })
             }
             if ($('#city_multi')) {
                 $('#city_multi').select2({
@@ -183,16 +219,18 @@
             $('#sub_niche').select2();
 
         })
-        function emptyNiche(){
-                if($('#keyword').val() != ''){
-                    $('#niche').val('').trigger('change');
-                }
+
+        function emptyNiche() {
+            if ($('#keyword').val() != '') {
+                $('#niche').val('').trigger('change');
             }
-        function emptyKeyword(){
-                if($('#niche').val() != ''){
-                    $('#keyword').val('');
-                }
+        }
+
+        function emptyKeyword() {
+            if ($('#niche').val() != '') {
+                $('#keyword').val('');
             }
+        }
         $('#niche').change(function() {
             var niche = $(this).val();
             $.ajax({
@@ -202,47 +240,46 @@
                     niche: niche
                 },
                 success: function(data) {
-                    console.log('dingo ',data)
+                    console.log('dingo ', data)
                     $('#sub_niche').empty();
                     $('#sub_niche').append('<option value="">Select</option>');
                     data.forEach(element => {
-                        $('#sub_niche').append('<option value="' + element.id + '">' + element.name +
+                        $('#sub_niche').append('<option value="' + element.id + '">' + element
+                            .name +
                             '</option>');
                     });
                 }
             });
         });
         const keywordsInput = document.getElementById('keyword');
-    const countrySelect = document.getElementById('country_multi');
-    const citySelect = document.getElementById('city_multi');
+        const countrySelect = document.getElementById('country_multi');
+        const citySelect = document.getElementById('city_multi');
 
-    const form = document.querySelector('#domainform');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        let keywords = keywordsInput.value.split(',').filter(Boolean); // Split by comma and remove empty strings
-        const countries = Array.from(countrySelect.selectedOptions).map(option => option.value);
-        const cities = Array.from(citySelect.selectedOptions).map(option => option.value);
-        const niche = document.getElementById('niche').value;
-        const subniche = document.getElementById('sub_niche').value;
-        if(subniche){
-            keywords = 1
-        }
-        else if(niche){
-            keywords = 1
-        }
-        else{
-            keywords = keywords.length
-        }
+        const form = document.querySelector('#domainform');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let keywords = keywordsInput.value.split(',').filter(
+                Boolean); // Split by comma and remove empty strings
+            const countries = Array.from(countrySelect.selectedOptions).map(option => option.value);
+            const cities = Array.from(citySelect.selectedOptions).map(option => option.value);
+            const niche = document.getElementById('niche').value;
+            const subniche = document.getElementById('sub_niche').value;
+            if (subniche) {
+                keywords = 1
+            } else if (niche) {
+                keywords = 1
+            } else {
+                keywords = keywords.length
+            }
 
-        totalSelections = keywords * (countries.length + cities.length);
+            totalSelections = keywords * (countries.length + cities.length);
 
-        if (totalSelections > 10) {
-            alert('You cannot select more than 10 combined keywords, countries, and cities.');
-        }
-        else{
-            $('#loader').show(); // Show the loader
-            this.submit();
-        }
-    });
+            if (totalSelections > 10) {
+                alert('You cannot select more than 10 combined keywords, countries, and cities.');
+            } else {
+                $('#loader').show(); // Show the loader
+                this.submit();
+            }
+        });
     </script>
 @endsection

@@ -17,7 +17,8 @@ class CityController extends Controller
     public function index()
     {
         $cities = City::all();
-        return view('admin.cities.index', compact('cities'));
+        $countries = Country::where('is_active', 1)->get();
+        return view('admin.cities.index', compact('cities', 'countries'));
     }
 
     /**
@@ -73,7 +74,7 @@ class CityController extends Controller
             return back()->with('error', 'Something went wrong!');
         }
     }
-    public function import (Request $request)
+    public function import(Request $request)
     {
         $request->validate([
             'file' => 'required|mimes:xls,xlsx,csv'
@@ -89,5 +90,13 @@ class CityController extends Controller
             dd($th->getMessage());
             return back()->with('error', 'Something went wrong!');
         }
+    }
+
+    public function get_by_country(Request $request)
+    {
+        $cities = City::select('name', 'id')->when(!empty($request->country_id), function ($q) use ($request) {
+            $q->where('country_id', $request->country_id);
+        })->get();
+        return response()->json($cities);
     }
 }

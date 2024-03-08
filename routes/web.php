@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('countries/change_status/{country}', [CountryController::class, 'change_status'])->name('countries.change_status');
     Route::resource('cities', CityController::class);
     Route::get('cities/change_status/{city}', [CityController::class, 'change_status'])->name('cities.change_status');
+    Route::post('cities/get_by_country', [CityController::class, 'get_by_country'])->name('cities.get_by_country');
     Route::resource('keywords', KeywordController::class);
     Route::get('keywords/change_status/{keyword}', [KeywordController::class, 'change_status'])->name('keywords.change_status');
     Route::resource('users', UserController::class);
