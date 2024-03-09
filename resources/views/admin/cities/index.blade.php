@@ -79,7 +79,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->country->name }}</td>
+                                    <td>{{ $item->country?->name }}</td>
                                     <td>{{ $item->is_active ? 'Active' : 'In active' }}</td>
                                     <td>
                                         <div class="d-flex" style="gap: 10px">

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::table('domains', function (Blueprint $table) {
             //
-            $table->dropColumn('keyword');
-            $table->dropColumn('country_id');
-            $table->dropColumn('city_id');
+            // $table->dropColumn('keyword');
+            // $table->dropColumn('country_id');
+            // $table->dropColumn('city_id');
         });
     }
 
@@ -26,9 +26,9 @@ return new class extends Migration
     {
         Schema::table('domains', function (Blueprint $table) {
             //
-            $table->string('keyword');
-            $table->foreignId('country_id');
-            $table->foreignId('city_id');
+            // $table->string('keyword');
+            // $table->foreignId('country_id');
+            // $table->foreignId('city_id');
         });
     }
 };
