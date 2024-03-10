@@ -113,7 +113,8 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Country</label>
-                                    <select name="country_id[]" class="form-control" id="country_multi" multiple>
+                                    <select name="country_id[]" class="form-control select2" id="country_multi" multiple>
+                                        <option value="select_all">Select All</option>
                                         @foreach ($countries as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
@@ -123,7 +124,8 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>City</label>
-                                    <select name="city_id[]" class="form-control" id="city_multi" multiple>
+                                    <select name="city_id[]" class="form-control select2" id="city_multi" multiple>
+                                        <option value="select_all">Select All</option>
                                         @foreach ($cities as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
@@ -194,6 +196,7 @@
                             success: function(data) {
                                 console.log(data)
                                 $('#city_multi').empty();
+                                $('#city_multi').append('<option value="select_all">Select All</option>');
                                 data.forEach(element => {
                                     $('#city_multi').append('<option value="' + element
                                         .id + '">' + element.name +
@@ -279,6 +282,48 @@
             } else {
                 $('#loader').show(); // Show the loader
                 this.submit();
+            }
+        });
+        var selectAllToggled = false;
+
+        $('.select2').on('change', function(e) {
+            console.log('changed')
+            var selectedValues = $(this).val(); // Current selected values
+
+            // "Select All" functionality with toggle behavior
+            if (selectedValues.includes('select_all')) {
+                // Check if "Select All" was previously toggled
+                if (!selectAllToggled) {
+                    // If not toggled before, select all options
+                    var allOptions = $(this).find('option').not('[value=select_all]').not('[value=deselect_all]')
+                        .map(function() {
+                            return this.value;
+                        }).get();
+
+                    $(this).val(allOptions).trigger('change');
+                    selectAllToggled = true; // Mark as toggled
+                } else {
+                    // If previously toggled, deselect all options including "Select All"
+                    $(this).val([]).trigger('change');
+                    selectAllToggled = false; // Reset toggle state
+                }
+            } else if (selectedValues.includes('deselect_all')) {
+                // "Deselect All" functionality
+                // Deselect all options
+                $(this).val([]).trigger('change');
+                selectAllToggled = false; // Reset toggle state since all are deselected
+            } else {
+                // If other options are manually selected/deselected, reset the toggle state
+                selectAllToggled = false;
+            }
+        });
+
+        // Handling manual deselection of "Select All" or "Deselect All"
+        $('.select2').on('select2:unselect', function(e) {
+            if (e.params.data.id === 'select_all' || e.params.data.id === 'deselect_all') {
+                // Deselect all options
+                $(this).val([]).trigger('change');
+                selectAllToggled = false; // Reset toggle state
             }
         });
     </script>
