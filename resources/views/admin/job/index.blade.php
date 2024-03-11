@@ -167,6 +167,7 @@
                             success: function(data) {
                                 console.log(data)
                                 $('#city_multi').empty();
+                                $('#city_multi').append('<option value="select_all">Select All</option>');
                                 data.forEach(element => {
                                     $('#city_multi').append('<option value="' + element
                                         .id + '">' + element.name +
