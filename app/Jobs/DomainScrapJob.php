@@ -124,7 +124,9 @@ class DomainScrapJob implements ShouldQueue
                     }
                 }
             }
-        } catch (Exception) {
+        } catch (Exception $e) {
+            Log::info('failed by job');
+            Log::info(\json_encode($e));
             \sleep(2);
             return;
         }
