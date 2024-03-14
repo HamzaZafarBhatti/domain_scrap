@@ -46,13 +46,14 @@ class JobController extends Controller
             $keywords = [];
             $keywords = array_merge($keywords, [strtolower($sub_niche->name)]);
             $sub_niche_name = $sub_niche->name;
+            $niche = Niche::find($request->niche);
+            $niche_name = $niche->name;
         } else if ($request->niche) {
             $niche = Niche::find($request->niche);
             $keywords = [];
             $keywords = array_merge($keywords, [strtolower($niche->name)]);
             $niche_name = $niche->name;
         }
-
         $city_name = count($city) > 1 ? 'All' : $city->first();
         $country_name = count($country) > 1 ? 'All' : $country->first();
 
