@@ -16,24 +16,26 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Date</th>
                                 <th>Country</th>
                                 <th>City</th>
                                 <th>Niche</th>
                                 <th>Sub Niche</th>
                                 <th>Status</th>
-                                <th>Domain</th>
+                                <th>progress</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($jobs as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->is_country ? 'Yes' : 'No' }}</td>
-                                    <td>{{ $item->is_city ? 'Yes' : 'No' }}</td>
-                                    <td>{{ $item->is_niche ? 'Yes' : 'No' }}</td>
-                                    <td>{{ $item->is_sub_niche ? 'Yes' : 'No' }}</td>
+                                    <td>{{\Carbon\Carbon::parse($item->created_at)->format('Y-m-d')}}</td>
+                                    <td>{{ $item->country_name }}</td>
+                                    <td>{{ $item->city_name }}</td>
+                                    <td>{{ $item->niche_name }}</td>
+                                    <td>{{ $item->sub_niche_name }}</td>
                                     <td>{{ $item->status}}</td>
-                                    <td>{{ $item->domain}}</td>
+                                    <td>{{ $item->progress}}</td>
                                 </tr>
                             @empty
                             @endforelse
