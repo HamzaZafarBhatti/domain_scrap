@@ -29,7 +29,6 @@ class JobController extends Controller
 
     public function start(Request $request)
     {
-        dd($request->all());
         $niche = null;
         $sub_niche = null;
         $country = Country::whereIn('id', $request->country_id ?? [])->pluck('name');
