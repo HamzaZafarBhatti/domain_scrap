@@ -34,6 +34,7 @@ class DomainScrapJob implements ShouldQueue
             'country_name' => $this->country_name,
             'niche_name' => $this->niche_name,
             'sub_niche_name' => $this->sub_niche_name,
+            'domain_tlds' => implode(',', $this->domain_tlds),
             'status' => 'Pending',
             'progress' => 0
         ]);

@@ -21,6 +21,7 @@
                                 <th>City</th>
                                 <th>Niche</th>
                                 <th>Sub Niche</th>
+                                <th>Domain Tlds</th>
                                 <th>Status</th>
                                 <th>progress</th>
                             </tr>
@@ -34,6 +35,7 @@
                                     <td>{{ $item->city_name }}</td>
                                     <td>{{ $item->niche_name }}</td>
                                     <td>{{ $item->sub_niche_name }}</td>
+                                    <td>{{$item->domain_tlds}}</td>
                                     <td>{{ $item->status}}</td>
                                     <td>{{ $item->progress}}</td>
                                 </tr>
