@@ -25,6 +25,13 @@ class DomainScrapJob implements ShouldQueue
     public $timeout = 0;
     public function __construct(private $domain_tlds, private $location, private $keywords, private $additional_keyword, private $year, private $niche = null, private $sub_niche = null, private $country = null, private $city = null, private $city_name, private $country_name, private $niche_name, private $sub_niche_name)
     {
+        $domain_tlds = $this->domain_tlds;
+        if(count($domain_tlds) > 1){
+            $domain_tlds = \implode(',', $domain_tlds);
+        }
+        else{
+            $domain_tlds = $domain_tlds[0];
+        }
         $this->jobdone = JobDone::create([
             'is_country' => $this->country ? true : false,
             'is_city' => $this->city ? true : false,
@@ -34,7 +41,7 @@ class DomainScrapJob implements ShouldQueue
             'country_name' => $this->country_name,
             'niche_name' => $this->niche_name,
             'sub_niche_name' => $this->sub_niche_name,
-            'domain_tlds' => implode(',', $this->domain_tlds),
+            'domain_tlds' => $domain_tlds,
             'status' => 'Pending',
             'progress' => 0
         ]);
