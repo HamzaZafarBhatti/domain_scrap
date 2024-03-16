@@ -85,6 +85,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('domain-tld.index') }}"
+                            class="nav-link @if (Route::is('domain-tld.*')) active @endif">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Domain Tlds
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('users.index') }}"
                             class="nav-link @if (Route::is('users.*')) active @endif">
                             <i class="nav-icon fas fa-th"></i>
