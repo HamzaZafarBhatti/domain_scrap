@@ -52,7 +52,7 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card " style="min-height: 700px">
                 <div class="card-header">
                     <h4>Availability</h4>
                 </div>
@@ -91,17 +91,6 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Additional Keyword</label>
-                                    <select name="additional_keyword" class="form-control" id="additional_keyword">
-                                        <option value="">Select</option>
-                                        @foreach ($keywords as $item)
-                                            <option value="{{ $item->name }}">{{ ucfirst($item->name) }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
                                     <label>Year</label>
                                     <select name="year" class="form-control">
                                         @for ($i = 2000; $i <= 2024; $i++)
@@ -112,6 +101,29 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
+                                    <label>Additional Keyword</label>
+                                    <select name="additional_keyword" class="form-control" id="additional_keyword">
+                                        <option value="">Select</option>
+                                        @foreach ($keywords as $item)
+                                            <option value="{{ $item->name }}">{{ ucfirst($item->name) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Domain TLD</label>
+
+                                    <select name="domain_tlds[]" class="form-control select2" multiple id="domain_tld">
+                                        <option value="select_all">Select All</option>
+                                        @foreach ($domain_tlds as $item)
+                                            <option value="{{ $item->id }}">{{ ucfirst($item->name) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
                                     <label>Country</label>
                                     <select name="country_id[]" class="form-control select2" id="country_multi" multiple>
                                         <option value="select_all">Select All</option>
@@ -121,7 +133,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label>City</label>
                                     <select name="city_id[]" class="form-control select2" id="city_multi" multiple>
@@ -178,6 +190,11 @@
             $('#domainform').submit(function() {
                 // $('#loader').show(); // Show the loader
             });
+            if ($('#domain_tld')) {
+                $('#domain_tld').select2({
+                    closeOnSelect: false
+                });
+            }
             if ($('#country_multi')) {
                 $('#country_multi').select2({
                     closeOnSelect: false
@@ -257,6 +274,7 @@
         const keywordsInput = document.getElementById('keyword');
         const countrySelect = document.getElementById('country_multi');
         const citySelect = document.getElementById('city_multi');
+        const domain_tld_select = document.getElementById('domain_tld');
 
         const form = document.querySelector('#domainform');
         form.addEventListener('submit', function(e) {
@@ -265,6 +283,7 @@
                 Boolean); // Split by comma and remove empty strings
             const countries = Array.from(countrySelect.selectedOptions).map(option => option.value);
             const cities = Array.from(citySelect.selectedOptions).map(option => option.value);
+            const domain_tld = Array.from(domain_tld_select.selectedOptions).map(option => option.value);
             const niche = document.getElementById('niche').value;
             const subniche = document.getElementById('sub_niche').value;
             if (subniche) {
@@ -275,8 +294,7 @@
                 keywords = keywords.length
             }
 
-            totalSelections = keywords * (countries.length + cities.length);
-
+            totalSelections = keywords * (countries.length + cities.length) * domain_tld.length;
             if (totalSelections > 10) {
                 alert('You cannot select more than 10 combined keywords, countries, and cities.');
             } else {

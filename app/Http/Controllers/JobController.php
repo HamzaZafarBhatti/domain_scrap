@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\DomainScrapJob;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\DomainTld;
 use App\Models\Keyword;
 use App\Models\Niche;
 use App\Models\SubNiche;
@@ -21,10 +22,11 @@ class JobController extends Controller
             $cities = City::orderBy('name', 'asc')->select('id', 'name')->get()->random(3);
             return view('admin.job.index', compact('cities', 'countries', 'keywords', 'niches'));
         }
+        $domain_tlds = DomainTld::orderBy('name')->select('id', 'name')->get();
         $countries = Country::orderBy('name', 'asc')->select('id', 'name')->get();
         $cities = City::orderBy('name', 'asc')->select('id', 'name')->get();
 
-        return view('admin.job.index', compact('cities', 'countries', 'keywords', 'niches'));
+        return view('admin.job.index', compact('cities', 'countries', 'keywords', 'niches', 'domain_tlds'));
     }
 
     public function start(Request $request)
@@ -56,8 +58,13 @@ class JobController extends Controller
         }
         $city_name = count($city) > 1 ? 'All' : $city->first();
         $country_name = count($country) > 1 ? 'All' : $country->first();
-
-        dispatch(new DomainScrapJob($location,$keywords,$request->additional_keyword, $request->year,$niche,$sub_niche,(boolean) $request->country_id,(boolean) $request->city_id,$city_name, $country_name, $niche_name, $sub_niche_name));
+        if(count($request->domain_tlds) > 0){
+            $domain_tlds = DomainTld::whereIn('id',$request->domain_tlds)->pluck('name');
+        }
+        else{
+            $domain_tlds = DomainTld::where('name','.com')->pluck('name');
+        }
+        dispatch(new DomainScrapJob($domain_tlds,$location,$keywords,$request->additional_keyword, $request->year,$niche,$sub_niche,(boolean) $request->country_id,(boolean) $request->city_id,$city_name, $country_name, $niche_name, $sub_niche_name));
 
         return back()->with('success', 'Your request is being processed.');
     }

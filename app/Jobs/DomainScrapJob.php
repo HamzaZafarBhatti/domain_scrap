@@ -23,7 +23,7 @@ class DomainScrapJob implements ShouldQueue
      */
     private $jobdone = null;
     public $timeout = 0;
-    public function __construct(private $location, private $keywords, private $additional_keyword, private $year, private $niche = null, private $sub_niche = null, private $country = null, private $city = null,private $city_name, private $country_name, private $niche_name, private $sub_niche_name)
+    public function __construct(private $domain_tlds, private $location, private $keywords, private $additional_keyword, private $year, private $niche = null, private $sub_niche = null, private $country = null, private $city = null, private $city_name, private $country_name, private $niche_name, private $sub_niche_name)
     {
         $this->jobdone = JobDone::create([
             'is_country' => $this->country ? true : false,
@@ -50,34 +50,38 @@ class DomainScrapJob implements ShouldQueue
         $location = $this->location;
         $keywords = $this->keywords;
         $additional_keyword = $this->additional_keyword;
+        $domain_tlds = $this->domain_tlds;
+
+        foreach ($domain_tlds as $tld) {
+            if (count($location) > 0) {
+                $totalSteps = count($location) * count($keywords) * count($domain_tlds);
 
 
-        if (count($location) > 0) {
-            $totalSteps = count($location) * count($keywords);
-            foreach ($location as $p_index => $loc) {
+                foreach ($location as $p_index => $loc) {
+                    foreach ($keywords as $index => $key) {
+                        $keyword = str_replace(' ', '', $key);
+                        $loc_name = str_replace(' ', '', $loc);
+                        $domain =  \strtolower($keyword) . $additional_keyword . \strtolower($loc_name) . $tld;
+                        // $delay = now()->addMinutes(2 * $p_index + $index);
+                        sleep(2);
+                        $this->processDomain($domain);
+                        $currentStep++;
+                        $progress = ($currentStep / $totalSteps) * 100;
+                        $this->jobdone->update(['progress' => $progress]);
+                    }
+                }
+            } else {
+                $totalSteps = count($keywords) * count($domain_tlds);
                 foreach ($keywords as $index => $key) {
                     $keyword = str_replace(' ', '', $key);
-                    $loc_name = str_replace(' ', '', $loc);
-                    $domain =  \strtolower($keyword) . $additional_keyword . \strtolower($loc_name) . '.com';
-                    // $delay = now()->addMinutes(2 * $p_index + $index);
+                    $domain =  \strtolower($keyword) . $additional_keyword . $tld;
+                    // $delay = now()->addMinutes(2 * $index);
                     sleep(2);
                     $this->processDomain($domain);
                     $currentStep++;
                     $progress = ($currentStep / $totalSteps) * 100;
                     $this->jobdone->update(['progress' => $progress]);
                 }
-            }
-        } else {
-            $totalSteps = count($keywords);
-            foreach ($keywords as $index => $key) {
-                $keyword = str_replace(' ', '', $key);
-                $domain =  \strtolower($keyword) . $additional_keyword . '.com';
-                // $delay = now()->addMinutes(2 * $index);
-                sleep(2);
-                $this->processDomain($domain);
-                $currentStep++;
-                $progress = ($currentStep / $totalSteps) * 100;
-                $this->jobdone->update(['progress' => $progress]);
             }
         }
         $this->jobdone->update(['progress' => 100]);

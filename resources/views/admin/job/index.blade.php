@@ -91,6 +91,18 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
+                                    <label>Domain TLD</label>
+
+                                    <select name="domain_tlds[]" class="form-control select2" multiple id="domain_tld">
+                                        <option value="select_all">Select All</option>
+                                        @foreach ($domain_tlds as $item)
+                                            <option value="{{ $item->id }}">{{ ucfirst($item->name) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
                                     <label>Additional Keyword</label>
                                     <select name="additional_keyword" class="form-control" id="additional_keyword">
                                         <option value="">Select</option>
@@ -149,6 +161,11 @@
             $('#domainform').submit(function() {
                 $('#loader').show(); // Show the loader
             });
+            if ($('#domain_tld')) {
+                $('#domain_tld').select2({
+                    closeOnSelect: false
+                });
+            }
             if ($('#country_multi')) {
                 $('#country_multi').select2({
                     closeOnSelect: false
