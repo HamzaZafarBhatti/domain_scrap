@@ -32,7 +32,7 @@ class DomainTldController extends Controller
             $data['name'] = '.' . $data['name'];
         }
         try {
-            DomainTld::create($data);
+            DomainTld::updateOrCreate($data,$data);
             return back()->with('success', 'DomainTld added successfully');
         } catch (\Throwable $th) {
             Log::info($th->getMessage());
