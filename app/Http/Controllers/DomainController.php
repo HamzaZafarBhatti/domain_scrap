@@ -20,12 +20,12 @@ class DomainController extends Controller
     {
         $keywords = Keyword::orderBy('name', 'asc')->select('id', 'name')->get();
         $niches = Niche::orderBy('name', 'asc')->select('id', 'name')->get();
+        $domain_tlds = DomainTld::orderBy('name')->select('id', 'name')->get();
         if (auth()->user()->role === \App\Enums\UserRoles::USER) {
             $countries = Country::orderBy('name', 'asc')->select('id', 'name')->get()->random(3);
             $cities = City::orderBy('name', 'asc')->select('id', 'name')->get()->random(3);
-            return view('admin.domain.index', compact('cities', 'countries', 'keywords', 'niches'));
+            return view('admin.domain.index', compact('cities', 'countries', 'keywords', 'niches','domain_tlds'));
         }
-        $domain_tlds = DomainTld::orderBy('name')->select('id', 'name')->get();
         $countries = Country::orderBy('name', 'asc')->select('id', 'name')->get();
         $cities = City::orderBy('name', 'asc')->select('id', 'name')->get();
 
